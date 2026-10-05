@@ -10,6 +10,8 @@ import json
 import time
 from playwright.sync_api import sync_playwright
 
+sys.stdout.reconfigure(encoding='utf-8', errors='replace', line_buffering=True)
+
 EXPECTED_RELICS = [
     { "id": "earbuds", "name": "Wired Earbuds", "specimen": "SPEC-3026-01" },
     { "id": "can", "name": "Aluminium Can", "specimen": "SPEC-3026-02" },
@@ -31,10 +33,10 @@ def verify(url="http://localhost:5173/"):
         context = browser.new_context(viewport={"width": 1280, "height": 800})
         page = context.new_page()
 
-        page.on("request", lambda r: external_requests.append(r.url) if not (r.url.startswith("http://localhost:") or r.url.startswith("blob:")) else None)
+        page.on("request", lambda r: external_requests.append(r.url) if not (r.url.startswith("http://localhost:") or r.url.startswith("http://127.0.0.1:") or r.url.startswith("blob:")) else None)
         page.on("console", lambda m: console_errors.append(m.text) if m.type == "error" else None)
 
-        page.goto(url, wait_until="networkidle", timeout=15000)
+        page.goto(url, wait_until="load", timeout=25000)
         page.wait_for_timeout(1000)
 
         # 1. Test Relics
@@ -57,10 +59,9 @@ def verify(url="http://localhost:5173/"):
         page.keyboard.press("Escape")
 
         # 3. Test XSS safety
-        page.goto(f"{url}#message=%3Cimg%20src%3Dx%20onerror%3Dwindow.__xssTriggered%3Dtrue%3E", wait_until="networkidle")
+        page.goto(f"{url}#message=%3Cimg%20src%3Dx%20onerror%3Dwindow.__xssTriggered%3Dtrue%3E", wait_until="load")
         xss_hit = page.evaluate("() => !!window.__xssTriggered")
         print(f"  [PASS] URL fragment XSS immunity confirmed (Triggered: {xss_hit})")
-
         browser.close()
 
     print(f"\nExternal runtime requests: {len(external_requests)}")

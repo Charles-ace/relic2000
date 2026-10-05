@@ -6,6 +6,8 @@
 
 ### Navigation & Key Links
 
+[**🚀 Live Application (Vercel)**](https://relic2000.vercel.app) &nbsp;|&nbsp;
+[**📦 GitHub Repository**](https://github.com/Charles-ace/relic2000) &nbsp;|&nbsp;
 [**📖 Architecture & Specs**](docs/ARCHITECTURE.md) &nbsp;|&nbsp;
 [**🏺 3D Asset Provenance**](docs/PROVENANCE.md) &nbsp;|&nbsp;
 [**🔬 Reality Audit (Real vs. Mocked)**](REAL_VS_MOCKED.md) &nbsp;|&nbsp;
