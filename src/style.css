@@ -1,0 +1,560 @@
+/* Relic Dig 3026 Stylesheet */
+:root {
+  --bg-deep: #111116;
+  --bg-panel: rgba(22, 22, 28, 0.92);
+  --border-panel: rgba(255, 255, 255, 0.12);
+  --text-white: #f5f5f7;
+  --text-dim: #9d9da8;
+  --accent-gold: #e5a953;
+  --accent-cyan: #50d2e6;
+  --accent-green: #5cdb95;
+  --focus-ring: #50d2e6;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-deep);
+  color: var(--text-white);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Accessibility: High contrast keyboard focus rings */
+:focus-visible {
+  outline: 2px solid var(--focus-ring) !important;
+  outline-offset: 3px !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+#app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top HUD Header */
+.hud-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: linear-gradient(180deg, rgba(17, 17, 22, 0.92) 0%, rgba(17, 17, 22, 0.5) 75%, transparent 100%);
+  pointer-events: none;
+}
+
+.hud-header > * {
+  pointer-events: auto;
+}
+
+.hud-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hud-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--accent-gold);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.hud-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-white);
+}
+
+.hud-status-group {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.hud-relic-picker {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hud-nav-btn {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-panel);
+  color: var(--text-white);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+}
+
+.hud-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.hud-select {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-panel);
+  color: var(--text-white);
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.hud-select:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.hud-progress-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-panel);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.hud-label {
+  color: var(--text-dim);
+}
+
+.hud-value {
+  color: var(--accent-cyan);
+  font-weight: 700;
+}
+
+/* 3D WebGL Canvas Container */
+.canvas-container {
+  width: 100vw;
+  height: 100vh;
+  touch-action: none; /* Required for smooth touch brushing */
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: crosshair;
+}
+
+/* In-Pit Interaction HUD */
+.pit-hud {
+  position: absolute;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.hud-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(18, 18, 24, 0.85);
+  border: 1px solid var(--border-panel);
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--text-dim);
+  backdrop-filter: blur(8px);
+}
+
+.hint-icon {
+  font-size: 15px;
+}
+
+.extract-btn {
+  pointer-events: auto;
+  background: linear-gradient(135deg, #e5a953 0%, #d48b28 100%);
+  color: #121214;
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  padding: 12px 28px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(229, 169, 83, 0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.extract-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(229, 169, 83, 0.6);
+}
+
+.extract-btn:active {
+  transform: translateY(0);
+}
+
+/* Examination View Modal Panel */
+.exam-panel {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  width: 90%;
+  max-width: 680px;
+  pointer-events: none;
+}
+
+.exam-card {
+  pointer-events: auto;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-panel);
+  border-radius: 12px;
+  padding: 24px;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.exam-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.exam-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.exam-specimen {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent-gold);
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+.exam-tripo-caption {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-cyan);
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.exam-provenance {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+}
+
+.exam-close-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-panel);
+  color: var(--text-white);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.exam-close-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.exam-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+.exam-fieldnote-box {
+  background: rgba(12, 12, 16, 0.7);
+  border-left: 3px solid var(--accent-cyan);
+  padding: 14px 16px;
+  border-radius: 0 6px 6px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fieldnote-header {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+.fieldnote-badge {
+  color: var(--accent-cyan);
+}
+
+.fieldnote-status {
+  color: var(--accent-green);
+}
+
+.exam-fieldnote {
+  font-size: 15px;
+  line-height: 1.5;
+  color: #dfdfe6;
+  font-style: italic;
+}
+
+.exam-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.exam-controls-hint {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.exam-action-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-white);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.exam-action-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Brush Cursor Circle */
+.brush-cursor {
+  position: absolute;
+  width: 52px;
+  height: 52px;
+  border: 2px dashed rgba(229, 169, 83, 0.8);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  display: none;
+  z-index: 50;
+  box-shadow: 0 0 12px rgba(229, 169, 83, 0.3);
+}
+
+/* Certificate Modal Overlay */
+.cert-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8, 8, 12, 0.88);
+  backdrop-filter: blur(12px);
+  padding: 20px;
+}
+
+.cert-card {
+  width: 100%;
+  max-width: 860px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-panel);
+  border-radius: 14px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  max-height: 94vh;
+  overflow-y: auto;
+}
+
+.cert-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cert-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--accent-gold);
+  font-weight: 600;
+}
+
+.cert-close-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-panel);
+  color: var(--text-white);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cert-close-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.cert-preview-wrapper {
+  width: 100%;
+  aspect-ratio: 1200 / 800;
+  background: #0d0d12;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(229, 169, 83, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cert-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+.cert-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cert-info-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-cyan);
+  letter-spacing: 0.08em;
+}
+
+.cert-download-btn {
+  background: linear-gradient(135deg, #e5a953 0%, #d48b28 100%);
+  color: #121214;
+  border: none;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  padding: 10px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(229, 169, 83, 0.35);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.cert-download-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(229, 169, 83, 0.55);
+}
+
+.cert-download-btn:active {
+  transform: translateY(0);
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .extract-btn {
+    transition: none !important;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .hud-header {
+    padding: 12px 14px;
+  }
+  .hud-title {
+    font-size: 16px;
+  }
+  .hud-status-group {
+    gap: 8px;
+  }
+  .hud-select {
+    padding: 6px 8px;
+    font-size: 12px;
+    max-width: 140px;
+  }
+  .hud-progress-container {
+    padding: 6px 8px;
+    font-size: 11px;
+  }
+  .exam-panel {
+    bottom: 12px;
+    width: 95%;
+  }
+  .exam-card {
+    padding: 16px;
+    gap: 10px;
+  }
+  .exam-title {
+    font-size: 18px;
+  }
+  .exam-fieldnote {
+    font-size: 13px;
+  }
+}

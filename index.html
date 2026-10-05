@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Relic Dig 3026 — Archaeological Field Simulator</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Top HUD Navigation -->
+    <header class="hud-header" role="banner">
+      <div class="hud-title-group">
+        <span class="hud-badge">EARTH SECTOR 7 // YEAR 3026</span>
+        <h1 class="hud-title">RELIC DIG 3026</h1>
+      </div>
+      <div class="hud-status-group">
+        <div class="hud-relic-picker" aria-label="Relic Find Selector">
+          <button id="hud-prev-find" class="hud-nav-btn" aria-label="Previous Relic Find" title="Previous Find">&larr;</button>
+          <label for="relic-select" class="sr-only">Select Relic Find</label>
+          <select id="relic-select" class="hud-select" aria-label="Choose Relic Find">
+            <option value="0">Find 1 of 5: Wired Earbuds</option>
+            <option value="1">Find 2 of 5: Aluminium Can</option>
+            <option value="2">Find 3 of 5: Glass Slab Tablet</option>
+            <option value="3">Find 4 of 5: TV Remote</option>
+            <option value="4">Find 5 of 5: Game Controller</option>
+          </select>
+          <button id="hud-next-find" class="hud-nav-btn" aria-label="Next Relic Find" title="Next Find">&rarr;</button>
+        </div>
+        <div class="hud-progress-container" aria-live="polite">
+          <span class="hud-label">SEDIMENT CLEARED:</span>
+          <span id="clearance-text" class="hud-value">0%</span>
+        </div>
+        <button id="hud-cert-btn" class="hud-nav-btn cert-trigger" aria-label="View Dig Certificate" title="Dig Certificate">📜 Certificate</button>
+      </div>
+    </header>
+
+    <!-- 3D WebGL Viewport -->
+    <main id="canvas-container" class="canvas-container" role="region" aria-label="Archaeological 3D Excavation Pit"></main>
+
+    <!-- In-Pit Interaction Prompt -->
+    <div id="pit-hud" class="pit-hud" aria-live="polite">
+      <div id="brush-hint" class="hud-hint">
+        <span class="hint-icon" aria-hidden="true">🖌</span>
+        <span>Drag brush across sediment to uncover relic</span>
+      </div>
+      <button id="extract-btn" class="extract-btn hidden" aria-label="Extract uncovered relic for examination">
+        ✨ RELIC UNCOVERED — CLICK OR TAP TO EXTRACT
+      </button>
+    </div>
+
+    <!-- Examination View Overlay (Visible in EXAMINATION mode) -->
+    <aside id="exam-panel" class="exam-panel hidden" role="dialog" aria-modal="true" aria-labelledby="exam-title" aria-describedby="exam-fieldnote">
+      <div class="exam-card">
+        <div class="exam-header">
+          <div class="exam-header-left">
+            <span id="exam-specimen" class="exam-specimen"></span>
+            <span class="exam-tripo-caption">Generated with Tripo H3.1</span>
+            <span id="exam-provenance" class="exam-provenance"></span>
+          </div>
+          <button id="exam-close-btn" class="exam-close-btn" aria-label="Close examination view and return to pit (Press Escape)">
+            ✕ Return to Pit (Esc)
+          </button>
+        </div>
+        <h2 id="exam-title" class="exam-title">Specimen Name</h2>
+        
+        <!-- Field Note Annotation -->
+        <div class="exam-fieldnote-box">
+          <div class="fieldnote-header">
+            <span class="fieldnote-badge">FIELD REPORT // ANNOTATION</span>
+            <span class="fieldnote-status">CLASSIFICATION CONFIRMED</span>
+          </div>
+          <p id="exam-fieldnote" class="exam-fieldnote"></p>
+        </div>
+
+        <div class="exam-footer">
+          <div class="exam-controls-hint">
+            <span aria-hidden="true">🔄 Drag to rotate &bull; 🔍 Scroll/Pinch to zoom</span>
+          </div>
+          <div class="exam-actions">
+            <button id="view-cert-btn" class="exam-action-btn cert-trigger" aria-label="View Dig Certificate Card">
+              📜 Dig Certificate
+            </button>
+            <button id="next-relic-btn" class="exam-action-btn">
+              Next Relic Find &rarr;
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Dig Certificate Modal Card -->
+    <aside id="cert-modal" class="cert-modal hidden" role="dialog" aria-modal="true" aria-labelledby="cert-modal-title">
+      <div class="cert-card">
+        <div class="cert-header">
+          <span id="cert-modal-title" class="cert-badge">ARCHAEOLOGICAL RECORD // EXPEDITION 3026</span>
+          <button id="cert-close-btn" class="cert-close-btn" aria-label="Close certificate modal (Press Escape)">
+            ✕ Close (Esc)
+          </button>
+        </div>
+        <div class="cert-preview-wrapper">
+          <canvas id="cert-canvas" class="cert-canvas" width="1200" height="800"></canvas>
+        </div>
+        <div class="cert-footer">
+          <div class="cert-info">
+            <span class="cert-info-tag">ARCHAEOLOGICAL STRATUM // SECTOR 7 IN-SITU LOG</span>
+          </div>
+          <div class="cert-buttons">
+            <button id="cert-download-btn" class="cert-download-btn">
+              💾 Download Certificate (.PNG)
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Custom Archaeological Brush Cursor -->
+    <div id="brush-cursor" class="brush-cursor" aria-hidden="true"></div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

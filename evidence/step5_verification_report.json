@@ -1,0 +1,65 @@
+{
+  "step": "STEP 6: Authored Content Verification & Build Validation",
+  "zero_external_network_requests": true,
+  "external_requests": [],
+  "console_errors": [],
+  "relic_field_notes": [
+    {
+      "id": "earbuds",
+      "name": "Wired Earbuds",
+      "specimenId": "SPEC-3026-01",
+      "fieldNote": "Personal acoustic communication implants, probably worn beneath the skin. Their connecting filament suggests an early neural interface, though the two separate receivers remain unexplained. Such devices were apparently common among people who preferred to receive information directly into the skull.",
+      "matches_final_copy": true
+    },
+    {
+      "id": "can",
+      "name": "Aluminium Can",
+      "specimenId": "SPEC-3026-02",
+      "fieldNote": "A disposable cylindrical pressure vessel, likely used to transport laboratory gases or emergency oxygen. The unusually thin construction suggests it was intended for a single use. Its crushed condition is consistent with archaeological evidence of widespread atmospheric instability.",
+      "matches_final_copy": true
+    },
+    {
+      "id": "tablet",
+      "name": "Glass Slab Tablet",
+      "specimenId": "SPEC-3026-03",
+      "fieldNote": "A portable mineral-glass writing tablet used by administrative workers. No visible writing survives, suggesting the surface was cleared after each transaction. Its remarkably smooth face may indicate that 2020s bureaucracy had already abandoned paper.",
+      "matches_final_copy": true
+    },
+    {
+      "id": "remote",
+      "name": "TV Remote",
+      "specimenId": "SPEC-3026-04",
+      "fieldNote": "A compact command instrument for controlling domestic machinery from a distance. The numerous raised symbols indicate that households of this period operated unusually complex environments. Its small size suggests it was carried continuously by senior members of the family.",
+      "matches_final_copy": true
+    },
+    {
+      "id": "controller",
+      "name": "Game Controller",
+      "specimenId": "SPEC-3026-05",
+      "fieldNote": "A hand-operated control interface, probably used to direct small domestic robots. The symmetrical arrangement of switches suggests coordinated movement rather than entertainment. Evidence of repeated thumb contact indicates that these machines required considerable manual supervision.",
+      "matches_final_copy": true
+    }
+  ],
+  "sealed_message_tests": {
+    "default_message": {
+      "value": "To whoever finds this: we knew you would eventually dig this far. The things you call relics were ordinary to us. Keep them safe. They are proof that we were here.",
+      "matches_final_copy": true
+    },
+    "custom_fragment": {
+      "raw_fragment": "message=Found%20under%20the%20shale%20of%20Old%20Europe.%20Keep%20searching%2C%20Dr.%20V.",
+      "decoded_message": "Found under the shale of Old Europe. Keep searching, Dr. V.",
+      "matches_expected": true
+    }
+  },
+  "certificate_tests": {
+    "modal_visible": true,
+    "canvas_resolution": "1200x800",
+    "export_success": true,
+    "exported_size_kb": 138.0,
+    "escape_closes_modal": true
+  },
+  "xss_safety_verified": true,
+  "exported_certificate_file": "C:\\Users\\akpan\\.gemini\\antigravity\\brain\\cb7e4ccf-da91-4869-b28f-9e63e17678f8\\exported_dig_certificate.png",
+  "examination_view_screenshot": "C:\\Users\\akpan\\.gemini\\antigravity\\brain\\cb7e4ccf-da91-4869-b28f-9e63e17678f8\\step6_examination_view.png",
+  "certificate_modal_screenshot": "C:\\Users\\akpan\\.gemini\\antigravity\\brain\\cb7e4ccf-da91-4869-b28f-9e63e17678f8\\step6_certificate_modal.png"
+}

@@ -1,0 +1,35 @@
+{
+  "core_loop": {
+    "status": "PASS",
+    "details": [
+      "Game loaded successfully.",
+      "All 5 relics excavated, extracted, rotated, zoomed, verified, and returned. Certificate opened, verified, exported, and closed via Escape."
+    ]
+  },
+  "mobile": {
+    "status": "PASS",
+    "details": [
+      "Mobile viewport verified: touch brushing clears sediment, touch-action:none prevents scroll, examination card fits, certificate fits, download button reachable, zero horizontal overflow."
+    ]
+  },
+  "reduced_motion": {
+    "status": "PASS",
+    "details": [
+      "Reduced-motion preference detected and obeyed: 1.2s camera/lift animation skipped immediately into examination view while preserving core functionality."
+    ]
+  },
+  "keyboard_a11y": {
+    "status": "PASS",
+    "details": [
+      "Accessible focus rings active, all buttons have accessible labels, Escape exits certificate and examination views, zero keyboard trapping."
+    ]
+  },
+  "network": {
+    "status": "PASS",
+    "external_requests": [],
+    "details": [
+      "Zero external runtime requests made. All assets served locally."
+    ]
+  },
+  "console_errors": []
+}

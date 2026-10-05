@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Production build output
+dist/
+
+# Environment and secrets
+.env
+.env.*
+*.env
+
+# Tripo configs and temporary assets
+.tripo/
+.tripo*
+*.tripo
+
+# Raw 3D model assets
+assets/raw/
+public/assets/raw/
+*.raw.glb
+
+# Local logs and editor artifacts
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
